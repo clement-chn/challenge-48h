@@ -1,8 +1,13 @@
 import React from 'react';
+import { useState } from 'react';
+import { Box } from '@mui/material';
  
-const Dashboard = ({ isAdmin }) => {
+const Dashboard = () => {
+  const [isAdmin, setIsAdmin] = useState(true);
+
   return (
-    <div>
+    <Box>
+      <p>Test dashboard</p>
       {isAdmin ? (
         <div>
           {/* Version administrateur */}
@@ -18,7 +23,7 @@ const Dashboard = ({ isAdmin }) => {
           {/* Ajoutez ici les composants ou fonctionnalités spécifiques à l'utilisateur */}
         </div>
       )}
-    </div>
+    </Box>
   );
 };
  
