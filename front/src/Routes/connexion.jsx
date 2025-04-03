@@ -18,13 +18,39 @@ import IconButton from "@mui/material/IconButton";
 export default function Connexion() {
   const [showPassword, setShowPassword] = useState(false);
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
-    console.log({
-      email: data.get("email"),
-      password: data.get("password"),
-    });
+
+    const email = data.get('email');
+    const password = data.get('password');
+
+    await loginUser(email, password);
+  };
+
+  const loginUser = async (email, password) => {
+    try {
+      const response = await fetch('http://localhost:3000/api/login', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ email, password }),
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data.error || 'Erreur lors de la connexion.');
+      }
+
+      console.log('Connexion réussie :', data);
+      localStorage.setItem('token', data.token);
+      alert('Connexion réussie !');
+    } catch (error) {
+      console.error('Erreur :', error.message);
+      alert(error.message);
+    }
   };
 
   return (

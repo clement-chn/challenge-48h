@@ -17,7 +17,7 @@ export class GlobalController {
 
   static async getPublics(req: Request, res: Response): Promise<void> {
     try {
-      const publics = await GlobalService.getAllFromTable('public');
+      const publics = await GlobalService.getAllFromTable('targetpublic');
       res.json(publics);
     } catch (error) {
       if (error instanceof Error) {

@@ -6,7 +6,7 @@ export class InvitationController {
   static async sendInvitation(req: Request, res: Response): Promise<void> {
     try {
       const { email } = req.body;
-      const currentUser = req.user as User;
+      const currentUser = res.locals.user as User;
 
       if (!currentUser) {
         res.status(401).json({ error: "Utilisateur non authentifié." });

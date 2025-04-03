@@ -7,7 +7,7 @@ const app = express();
 app.use(express.json());
 
 // Utiliser les routes globales
-app.use('/api/global', globalRoutes);
+app.use('/api', globalRoutes);
 
 // Démarrer le serveur
 const PORT = 3000;

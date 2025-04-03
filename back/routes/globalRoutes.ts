@@ -13,7 +13,7 @@ router.get('/publics', GlobalController.getPublics);
 router.get('/eventtype', GlobalController.getTypes);
 router.get('/schoolLevels', GlobalController.getSchoolLevels);
 
-// Routes pour les événements
+// Routes pour les évènements
 router.post('/events', EventController.createEvent);
 router.put('/events/:id', EventController.updateEvent);
 router.delete('/events/:id', EventController.deleteEvent);
@@ -25,6 +25,7 @@ router.get('/events/by-user/:userId', EventController.getEventsByUser);
 router.post('/send-invitation', authenticate, InvitationController.sendInvitation);
 
 // Routes pour les utilisateurs
+router.post('/login', UserController.loginUser);
 router.post('/users', UserController.createUser);
 router.put('/users/:id', UserController.updateUser);
 router.delete('/users/:id', UserController.deleteUser);
