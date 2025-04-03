@@ -28,24 +28,36 @@ export default function Connexion() {
   };
 
   return (
-    <Container component="main" maxWidth="xs" sx={{
-      padding: { xs: 2, sm: 3 },
-      minHeight: '100vh',
-      display: 'flex',
-      alignItems: 'center'
-    }}>
-      <CssBaseline />
-      <Box sx={{ 
-        width: '100%',
-        display: "flex", 
-        flexDirection: "column", 
-        alignItems: "center",
+    <Container
+      component="main"
+      maxWidth={false}
+      sx={{
         padding: { xs: 2, sm: 3 },
-        backgroundColor: 'white',
-        borderRadius: { xs: 0, sm: 2 },
-        boxShadow: { xs: 0, sm: 3 }
-      }}>
-        <Avatar sx={{ m: 1, bgcolor: '#1CABE2' }}>
+        minHeight: "100vh",
+        width: "100vw", 
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+        backgroundImage: "url('/img/unicef.jpg')",
+        backgroundSize: "cover",
+        backgroundPosition: "center",
+        backgroundRepeat: "no-repeat",
+      }}
+    >
+      <CssBaseline />
+      <Box
+        sx={{
+          width: { xs: "100%", sm: "400px" },
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+          padding: { xs: 2, sm: 3 },
+          backgroundColor: "rgba(255, 255, 255, 0.9)", 
+          borderRadius: 2,
+          boxShadow: 3,
+        }}
+      >
+        <Avatar sx={{ m: 1, bgcolor: "#1CABE2" }}>
           <LockOutlinedIcon />
         </Avatar>
         <Typography component="h1" variant="h5">
@@ -69,9 +81,9 @@ export default function Connexion() {
               ),
             }}
             sx={{
-              '& .MuiInputBase-root': {
-                fontSize: { xs: '0.875rem', sm: '1rem' }
-              }
+              "& .MuiInputBase-root": {
+                fontSize: { xs: "0.875rem", sm: "1rem" },
+              },
             }}
           />
           <TextField
@@ -93,7 +105,12 @@ export default function Connexion() {
               ),
             }}
           />
-          <Button type="submit" fullWidth variant="contained" sx={{ mt: 3, mb: 2, backgroundColor: '#1CABE2' }}>
+          <Button
+            type="submit"
+            fullWidth
+            variant="contained"
+            sx={{ mt: 3, mb: 2, backgroundColor: "#1CABE2" }}
+          >
             Se connecter
           </Button>
           <Grid container spacing={2} justifyContent="space-between">
