@@ -1,128 +1,105 @@
+import { Box } from '@mui/material';
 import React, { useState } from 'react';
-import { Box, Card, CardContent, IconButton, Typography, Button } from '@mui/material';
-import EditIcon from '@mui/icons-material/Edit';
-import DeleteIcon from '@mui/icons-material/Delete';
-import ModalCreeEvent from '../Components/ModalCreeEvent';
-import HeaderSection from '../Components/HeaderSection'; // Import du nouveau composant
-import EventFilterSelect from '../components/EventFilterSelect'; // Import du nouveau composant
+import Event from '../components/Event.jsx';
+import OutlinedInput from '@mui/material/OutlinedInput';
+import InputLabel from '@mui/material/InputLabel';
+import MenuItem from '@mui/material/MenuItem';
+import FormControl from '@mui/material/FormControl';
+import ListItemText from '@mui/material/ListItemText';
+import Select from '@mui/material/Select';
+import Checkbox from '@mui/material/Checkbox';
+
+const ITEM_HEIGHT = 48;
+const ITEM_PADDING_TOP = 8;
+const MenuProps = {
+  PaperProps: {
+    style: {
+      maxHeight: ITEM_HEIGHT * 4.5 + ITEM_PADDING_TOP,
+      width: 250,
+    },
+  },
+};
+
+const names = [
+  'Autour de moi',
+  'Inscrit'
+];
+
+const events = [
+  {
+    name: 'Conférence React',
+    description: 'Une conférence sur les dernières nouveautés de React.',
+    date: '2025-04-05',
+    time: '14:00',
+    location: 'Paris, France',
+  },
+  {
+    name: 'Atelier Node.js',
+    description: 'Un atelier pratique pour apprendre Node.js.',
+    date: '2025-04-10',
+    time: '10:00',
+    location: 'Lyon, France',
+  },
+  {
+    name: 'Hackathon JS',
+    description: 'Un hackathon pour les passionnés de JavaScript.',
+    date: '2025-04-15',
+    time: '09:00',
+    location: 'Marseille, France',
+  },
+];
 
 const AdminDashboard = () => {
-  const [open, setOpen] = useState(false);
-  const [events, setEvents] = useState([]);
-  const [eventData, setEventData] = useState({
-    title: '',
-    date: '',
-    description: '',
-  });
-  const [registeredEvents, setRegisteredEvents] = useState([]);
-  const [filter, setFilter] = useState('all'); // État pour le filtre
-  const [isFilterApplied, setIsFilterApplied] = useState(false); // État pour savoir si un filtre est appliqué
+  const [isAdmin, setIsAdmin] = useState(true);
 
-  const handleOpen = () => setOpen(true);
-  const handleClose = () => {
-    setOpen(false);
-    setEventData({ title: '', date: '', description: '' });
+  const [personName, setPersonName] = useState([]);
+
+  const handleChange = (event) => {
+    const {
+      target: { value },
+    } = event;
+    setPersonName(
+      // On autofill we get a stringified value.
+      typeof value === 'string' ? value.split(',') : value,
+    );
   };
 
-  const handleChange = (e) => {
-    setEventData({ ...eventData, [e.target.name]: e.target.value });
-  };
-
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    setEvents([...events, { ...eventData, id: Date.now() }]);
-    handleClose();
-  };
-
-  const handleDelete = (id) => {
-    setEvents(events.filter(event => event.id !== id));
-    setRegisteredEvents(registeredEvents.filter(eventId => eventId !== id));
-  };
-
-  const handleRegister = (id) => {
-    if (registeredEvents.includes(id)) {
-      setRegisteredEvents(registeredEvents.filter(eventId => eventId !== id));
-    } else {
-      setRegisteredEvents([...registeredEvents, id]);
-    }
-  };
-
-  const handleSendMail = () => {
-    alert('Mail envoyé !');
-  };
-
-  const handleFilterChange = (selectedFilter) => {
-    setFilter(selectedFilter);
-    setIsFilterApplied(true); // Activer le filtre après la sélection
-  };
-
-  // Filtrer les événements en fonction du filtre sélectionné
-  const filteredEvents = events.filter((event) => {
-    if (!isFilterApplied) {
-      return true; // Affiche tous les événements si aucun filtre n'est appliqué
-    }
-    if (filter === 'closest') {
-      // Trier par date la plus proche
-      return true; // Ajoutez une logique pour trier par date
-    }
-    if (filter === 'registered') {
-      return registeredEvents.includes(event.id);
-    }
-    return true; // Tous les événements
-  });
 
   return (
-    <div style={{ backgroundColor: '#1CABE2', minHeight: '100vh' }}> {/* Fond principal */}
-      <Box sx={{ width: '100%' }}> {/* Conteneur parent pour permettre la largeur complète */}
-        {/* Utilisation du composant HeaderSection */}
-        <HeaderSection onAddEvent={handleOpen} onSendMail={handleSendMail} />
+    <Box sx={{ maxWidth: '36rem', margin: 'auto' }}>
 
-        {/* Afficher le composant EventFilterSelect uniquement s'il y a des événements */}
-        {events.length > 0 && (
-          <EventFilterSelect filter={filter} setFilter={handleFilterChange} />
-        )}
+      <FormControl sx={{ m: 1, width: 300}}>
+        <InputLabel id="demo-multiple-checkbox-label">Filtres</InputLabel>
+        <Select
+          labelId="demo-multiple-checkbox-label"
+          id="demo-multiple-checkbox"
+          multiple
+          value={personName}
+          onChange={handleChange}
+          input={<OutlinedInput label="Filtres" />}
+          renderValue={(selected) => selected.join(', ')}
+          MenuProps={MenuProps}
+        >
+          {names.map((name) => (
+            <MenuItem key={name} value={name}>
+              <Checkbox checked={personName.includes(name)} />
+              <ListItemText primary={name} />
+            </MenuItem>
+          ))}
+        </Select>
+      </FormControl>
 
-        {/* Liste des événements filtrés */}
-        {filteredEvents.map((event) => (
-          <Card key={event.id} sx={{ mb: 2, p: 2, display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-            <CardContent>
-              <Typography variant="subtitle2" color="textSecondary">
-                {event.date}
-              </Typography>
-              <Typography variant="h6">{event.title}</Typography>
-              <Typography variant="body2" color="textSecondary">
-                {event.description}
-              </Typography>
-            </CardContent>
-            <Box>
-              <IconButton color="primary">
-                <EditIcon />
-              </IconButton>
-              <IconButton color="error" onClick={() => handleDelete(event.id)}>
-                <DeleteIcon />
-              </IconButton>
-              <Button
-                variant="contained"
-                color={registeredEvents.includes(event.id) ? 'error' : 'primary'}
-                onClick={() => handleRegister(event.id)}
-                sx={{ ml: 1 }}
-              >
-                {registeredEvents.includes(event.id) ? 'Se désinscrire' : 'S’inscrire'}
-              </Button>
-            </Box>
-          </Card>
-        ))}
-
-        {/* Utilisation du composant ModalCreeEvent */}
-        <ModalCreeEvent
-          open={open}
-          handleClose={handleClose}
-          handleSubmit={handleSubmit}
-          handleChange={handleChange}
-          eventData={eventData}
+      {events.map((event, index) => (
+        <Event
+          key={index}
+          name={event.name}
+          description={event.description}
+          date={event.date}
+          time={event.time}
+          location={event.location}
         />
-      </Box>
-    </div>
+      ))}
+    </Box>
   );
 };
 
