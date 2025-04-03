@@ -32,9 +32,35 @@ export default function Inscription() {
   };
 
   return (
-    <Container component="main" maxWidth="xs">
-      <CssBaseline />
-      <Box sx={{ marginTop: 8, display: "flex", flexDirection: "column", alignItems: "center" }}>
+    <Container
+      component="main"
+      maxWidth={false}
+      sx={{
+        padding: { xs: 2, sm: 3 },
+        minHeight: "100vh",
+        width: "100vw", 
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+        backgroundImage: "url('/img/unicef.jpg')",
+        backgroundSize: "cover",
+        backgroundPosition: "center",
+        backgroundRepeat: "no-repeat",
+      }}
+    >
+      <Box
+        sx={{
+          width: { xs: "100%", sm: "400px" },
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+          padding: { xs: 2, sm: 3 },
+          backgroundColor: "rgba(255, 255, 255, 0.9)", 
+          borderRadius: 2,
+          boxShadow: 3,
+        }}
+      >
+        <CssBaseline />
         <Avatar sx={{ m: 1, bgcolor: '#1CABE2' }}>
           <LockOutlinedIcon />
         </Avatar>
