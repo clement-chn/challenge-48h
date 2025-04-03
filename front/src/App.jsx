@@ -12,16 +12,14 @@ import '@fontsource/roboto/700.css';
 
 function App() {
   return (
-    <>  
-      <Box>test</Box>
-      <Button>test</Button>
-
+    <>
       <Router>
         <div className="min-h-screen bg-gray-50 text-gray-900">
           <Routes>
             <Route path="/" element={<Connexion />} />
             <Route path="/dashboard" element={<Dashboard />} />
             <Route path="/inscription" element={<Inscription />} />
+            <Route path="/forgot-password" element={<ForgotPassword />} />
           </Routes>
         </div>
       </Router>

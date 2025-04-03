@@ -5,6 +5,7 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import ModalCreeEvent from '../Components/ModalCreeEvent';
 import HeaderSection from '../Components/HeaderSection'; // Import du nouveau composant
 import EventFilterSelect from '../components/EventFilterSelect'; // Import du nouveau composant
+import Event from '../components/Event'; // Import du composant Event
 
 const AdminDashboard = () => {
   const [open, setOpen] = useState(false);
@@ -122,6 +123,8 @@ const AdminDashboard = () => {
           eventData={eventData}
         />
       </Box>
+
+      <Event />
     </div>
   );
 };
