@@ -19,7 +19,7 @@ export class UserService {
 
       return data;
     } catch (error) {
-      throw new Error(`Erreur interne: ${error.message}`);
+      return null; 
     }
   }
 
@@ -33,11 +33,11 @@ export class UserService {
 
       return data as User;
     } catch (error) {
-      throw new Error(`Erreur interne: ${error.message}`);
+      return null; 
     }
   }
 
-  static async generateResetToken(email: string): Promise<string> {
+  static async generateResetToken(email: string): Promise<string | null> {
     try {
       const user = await this.getUserByEmail(email);
       if (!user) {
@@ -57,7 +57,12 @@ export class UserService {
 
       return resetToken;
     } catch (error) {
-      throw new Error(`Erreur interne: ${error.message}`);
+      if (error instanceof Error) {
+        console.error(`Erreur interne : ${error.message}`);
+      } else {
+        console.error('Erreur inconnue.');
+      }
+      return null; 
     }
   }
 
@@ -89,35 +94,27 @@ export class UserService {
 
       return "Mot de passe mis à jour avec succès";
     } catch (error) {
-      throw new Error(`Erreur interne: ${error.message}`);
+      return null; 
     }
   }
 
   static async sendInvitation(email: string, currentUser: User): Promise<string> {
-    try {
-      if (!currentUser.isAdmin) {
-        throw new Error("Vous n'êtes pas autorisé à envoyer des invitations.");
-      }
-
-      const token = crypto.randomBytes(32).toString('hex');
-
-      const expiresAt = new Date();
-      expiresAt.setHours(expiresAt.getHours() + 24);
-
-      const { error } = await supabase.from('invitations').insert([
-        { email, token, expires_at: expiresAt },
-      ]);
-
-      if (error) {
-        throw new Error(`Erreur lors de l'envoi de l'invitation: ${error.message}`);
-      }
-
-      const invitationLink = `https://votre-site.com/invitation?token=${token}`;
-      console.log(`Invitation envoyée à ${email}: ${invitationLink}`);
-
-      return invitationLink;
-    } catch (error) {
-      throw new Error(`Erreur interne: ${error.message}`);
+    if (!currentUser.isAdmin) {
+      throw new Error("Vous n'êtes pas autorisé à envoyer des invitations.");
     }
+
+    const token = crypto.randomBytes(32).toString('hex');
+    const expiresAt = new Date();
+    expiresAt.setHours(expiresAt.getHours() + 24);
+
+    const { error } = await supabase.from('invitations').insert([
+      { email, token, expires_at: expiresAt },
+    ]);
+
+    if (error) {
+      throw new Error(`Erreur lors de l'envoi de l'invitation : ${error.message}`);
+    }
+
+    return `https://votre-site.com/invitation?token=${token}`;
   }
 }
