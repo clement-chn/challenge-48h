@@ -1,62 +1,32 @@
 import express from 'express';
-import { GlobalService } from '../service/GlobalService';
+import { GlobalController } from '../controllers/GlobalController';
+import { authenticate } from '../middleware/auth';
+import { UserController } from '../controllers/UserController';
+import { EventController } from '../controllers/EventController';
+import { InvitationController } from '../controllers/InvitationController';
 
 const router = express.Router();
 
-// Route pour récupérer tous les thèmes
-router.get('/themes', async (req, res) => {
-  try {
-    const themes = await GlobalService.getAllFromTable('theme');
-    res.json(themes);
-  } catch (error) {
-    if (error instanceof Error) {
-      res.status(500).json({ error: error.message });
-    } else {
-      res.status(500).json({ error: 'Une erreur inconnue est survenue.' });
-    }
-  }
-});
+// Routes globales
+router.get('/themes', GlobalController.getThemes);
+router.get('/publics', GlobalController.getPublics);
+router.get('/eventtype', GlobalController.getTypes);
+router.get('/schoolLevels', GlobalController.getSchoolLevels);
 
-// Route pour récupérer tous les publics
-router.get('/publics', async (req, res) => {
-  try {
-    const publics = await GlobalService.getAllFromTable('public');
-    res.json(publics);
-  } catch (error) {
-    if (error instanceof Error) {
-      res.status(500).json({ error: error.message });
-    } else {
-      res.status(500).json({ error: 'Une erreur inconnue est survenue.' });
-    }
-  }
-});
+// Routes pour les événements
+router.post('/events', EventController.createEvent);
+router.put('/events/:id', EventController.updateEvent);
+router.delete('/events/:id', EventController.deleteEvent);
+router.get('/events/by-date', EventController.getEventsByDate);
+router.get('/events/by-city/:city', EventController.getEventsByCity);
+router.get('/events/by-user/:userId', EventController.getEventsByUser);
 
-// Route pour récupérer tous les types
-router.get('/types', async (req, res) => {
-  try {
-    const types = await GlobalService.getAllFromTable('eventtype');
-    res.json(types);
-  } catch (error) {
-    if (error instanceof Error) {
-      res.status(500).json({ error: error.message });
-    } else {
-      res.status(500).json({ error: 'Une erreur inconnue est survenue.' });
-    }
-  }
-});
+// Route pour envoyer une invitation
+router.post('/send-invitation', authenticate, InvitationController.sendInvitation);
 
-// Route pour récupérer tous les niveaux scolaires
-router.get('/schoolLevels', async (req, res) => {
-    try {
-      const schoolLevels = await GlobalService.getAllFromTable('schoollevel');
-      res.json(schoolLevels);
-    } catch (error) {
-      if (error instanceof Error) {
-        res.status(500).json({ error: error.message });
-      } else {
-        res.status(500).json({ error: 'Une erreur inconnue est survenue.' });
-      }
-    }
-  });
+// Routes pour les utilisateurs
+router.post('/users', UserController.createUser);
+router.put('/users/:id', UserController.updateUser);
+router.delete('/users/:id', UserController.deleteUser);
 
 export default router;

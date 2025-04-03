@@ -4,7 +4,7 @@ import { User } from '../interface/User';
 import { GlobalService } from './GlobalService';
 
 export class EventService {
-  // Créer un événement (admin)
+  // Créer un évènement (admin)
   static async createEvent(event: Event, currentUser: User): Promise<Event> {
     try {
       if (!currentUser.isAdmin) {
@@ -40,7 +40,7 @@ export class EventService {
     return await GlobalService.getAllFromTable('SchoolLevel');
   }
 
-  // Modifier un événement (admin)
+  // Modifier un évènement (admin)
   static async updateEvent(eventId: number, updatedEvent: Partial<Event>, currentUser: User): Promise<Event> {
     try {
       if (!currentUser.isAdmin) {
@@ -60,7 +60,7 @@ export class EventService {
     }
   }
 
-  // Supprimer un événement (admin)
+  // Supprimer un évènement (admin)
   static async deleteEvent(eventId: number, currentUser: User): Promise<void> {
     try {
       if (!currentUser.isAdmin) {
@@ -78,7 +78,7 @@ export class EventService {
     }
   }
 
-  // Rejoindre un événement (Tous)
+  // Rejoindre un évènement (Tous)
   static async joinEvent(eventId: number, currentUser: User): Promise<void> {
     try {
       const { data: existingRegistration, error: checkError } = await supabase
@@ -108,4 +108,58 @@ export class EventService {
       throw new Error(`Erreur interne : ${err.message}`);
     }
   }
+
+  static async getEventsByDate(): Promise<Event[]> {
+    try {
+      const { data, error } = await supabase
+        .from('events')
+        .select('*')
+        .order('date', { ascending: false }); 
+  
+      if (error) {
+        throw new Error(`Erreur lors de la récupération des événements : ${error.message}`);
+      }
+  
+      return data as Event[];
+    } catch (error) {
+      const err = error as Error;
+      throw new Error(`Erreur interne : ${err.message}`);
+    }
+  }
+
+  static async getEventsByCity(city: string): Promise<Event[]> {
+    try {
+      const { data, error } = await supabase
+        .from('events')
+        .select('*')
+        .eq('city', city); 
+  
+      if (error) {
+        throw new Error(`Erreur lors de la récupération des événements pour la ville ${city} : ${error.message}`);
+      }
+  
+      return data as Event[];
+    } catch (error) {
+      const err = error as Error;
+      throw new Error(`Erreur interne : ${err.message}`);
+    }
+  }
+
+  static async getEventsByUser(userId: number): Promise<Event[]> {
+  try {
+    const { data, error } = await supabase
+      .from('events')
+      .select('*')
+      .eq('idUser', userId); 
+
+    if (error) {
+      throw new Error(`Erreur lors de la récupération des événements pour l'utilisateur ${userId} : ${error.message}`);
+    }
+
+        return data as Event[];
+        } catch (error) {
+            const err = error as Error;
+            throw new Error(`Erreur interne : ${err.message}`);
+        }
+    }
 }

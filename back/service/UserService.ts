@@ -98,23 +98,49 @@ export class UserService {
     }
   }
 
-  static async sendInvitation(email: string, currentUser: User): Promise<string> {
-    if (!currentUser.isAdmin) {
-      throw new Error("Vous n'êtes pas autorisé à envoyer des invitations.");
+  static async updateUser(userId: number, updatedData: Partial<User>): Promise<User | null> {
+    try {
+      const { data, error } = await supabase
+        .from('users')
+        .update(updatedData) 
+        .eq('id', userId)
+        .select('*') 
+        .single();
+
+      if (error) {
+        throw new Error(`Erreur lors de la mise à jour de l'utilisateur : ${error.message}`);
+      }
+
+      return data as User;
+    } catch (error) {
+      if (error instanceof Error) {
+        console.error(`Erreur interne : ${error.message}`);
+      } else {
+        console.error('Erreur inconnue.');
+      }
+      return null;
     }
+  }
 
-    const token = crypto.randomBytes(32).toString('hex');
-    const expiresAt = new Date();
-    expiresAt.setHours(expiresAt.getHours() + 24);
+  static async deleteUser(userId: number): Promise<string> {
+    try {
+      const { error } = await supabase
+        .from('users')
+        .delete()
+        .eq('id', userId);
 
-    const { error } = await supabase.from('invitations').insert([
-      { email, token, expires_at: expiresAt },
-    ]);
+      if (error) {
+        throw new Error(`Erreur lors de la suppression de l'utilisateur : ${error.message}`);
+      }
 
-    if (error) {
-      throw new Error(`Erreur lors de l'envoi de l'invitation : ${error.message}`);
+      return "Utilisateur supprimé avec succès";
+    } catch (error) {
+      if (error instanceof Error) {
+        console.error(`Erreur interne : ${error.message}`);
+      } else {
+        console.error('Erreur inconnue.');
+      }
+      throw new Error("Erreur lors de la suppression de l'utilisateur");
     }
-
-    return `https://votre-site.com/invitation?token=${token}`;
   }
 }
