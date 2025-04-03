@@ -1,8 +1,8 @@
 import './App.css'
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
-import Connexion from './Routes/connexion.jsx'
-import Dashboard from './Routes/dashboard.jsx'
-import Inscription from './Routes/inscriptions.jsx'
+import Connexion from './Routes/connexion'
+import Dashboard from './Routes/dashboard'
+import Inscription from './Routes/inscription'
 
 function App() {
   return (

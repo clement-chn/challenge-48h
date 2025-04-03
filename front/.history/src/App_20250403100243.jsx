@@ -2,7 +2,7 @@ import './App.css'
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
 import Connexion from './Routes/connexion.jsx'
 import Dashboard from './Routes/dashboard.jsx'
-import Inscription from './Routes/inscriptions.jsx'
+import Inscription from './Routes/inscription.jsx'
 
 function App() {
   return (
