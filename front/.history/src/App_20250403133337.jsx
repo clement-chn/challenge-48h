@@ -8,7 +8,7 @@ function App() {
   return (
     <>  
       <Router>
-        <div style={{ minHeight: '100vh' }}> {/* Suppression de backgroundColor */}
+        <div  style={{ backgroundColor: '#1CABE2' }}> {/* Correction du fond */}
           <Routes>
             <Route path="/" element={<Connexion />} />
             <Route path="/dashboard" element={<Dashboard />} />

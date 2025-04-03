@@ -16,7 +16,6 @@ const AdminDashboard = () => {
   });
   const [registeredEvents, setRegisteredEvents] = useState([]);
   const [filter, setFilter] = useState('all'); // État pour le filtre
-  const [isFilterApplied, setIsFilterApplied] = useState(false); // État pour savoir si un filtre est appliqué
 
   const handleOpen = () => setOpen(true);
   const handleClose = () => {
@@ -51,16 +50,8 @@ const AdminDashboard = () => {
     alert('Mail envoyé !');
   };
 
-  const handleFilterChange = (selectedFilter) => {
-    setFilter(selectedFilter);
-    setIsFilterApplied(true); // Activer le filtre après la sélection
-  };
-
   // Filtrer les événements en fonction du filtre sélectionné
   const filteredEvents = events.filter((event) => {
-    if (!isFilterApplied) {
-      return true; // Affiche tous les événements si aucun filtre n'est appliqué
-    }
     if (filter === 'closest') {
       // Trier par date la plus proche
       return true; // Ajoutez une logique pour trier par date
@@ -77,10 +68,8 @@ const AdminDashboard = () => {
         {/* Utilisation du composant HeaderSection */}
         <HeaderSection onAddEvent={handleOpen} onSendMail={handleSendMail} />
 
-        {/* Afficher le composant EventFilterSelect uniquement s'il y a des événements */}
-        {events.length > 0 && (
-          <EventFilterSelect filter={filter} setFilter={handleFilterChange} />
-        )}
+        {/* Utilisation du composant EventFilterSelect */}
+        <EventFilterSelect filter={filter} setFilter={setFilter} />
 
         {/* Liste des événements filtrés */}
         {filteredEvents.map((event) => (

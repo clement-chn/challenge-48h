@@ -4,7 +4,6 @@ import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
 import ModalCreeEvent from '../Components/ModalCreeEvent';
 import HeaderSection from '../Components/HeaderSection'; // Import du nouveau composant
-import EventFilterSelect from '../Components/EventFilterSelect'; // Import du nouveau composant
 
 const AdminDashboard = () => {
   const [open, setOpen] = useState(false);
@@ -15,8 +14,6 @@ const AdminDashboard = () => {
     description: '',
   });
   const [registeredEvents, setRegisteredEvents] = useState([]);
-  const [filter, setFilter] = useState('all'); // État pour le filtre
-  const [isFilterApplied, setIsFilterApplied] = useState(false); // État pour savoir si un filtre est appliqué
 
   const handleOpen = () => setOpen(true);
   const handleClose = () => {
@@ -51,39 +48,14 @@ const AdminDashboard = () => {
     alert('Mail envoyé !');
   };
 
-  const handleFilterChange = (selectedFilter) => {
-    setFilter(selectedFilter);
-    setIsFilterApplied(true); // Activer le filtre après la sélection
-  };
-
-  // Filtrer les événements en fonction du filtre sélectionné
-  const filteredEvents = events.filter((event) => {
-    if (!isFilterApplied) {
-      return true; // Affiche tous les événements si aucun filtre n'est appliqué
-    }
-    if (filter === 'closest') {
-      // Trier par date la plus proche
-      return true; // Ajoutez une logique pour trier par date
-    }
-    if (filter === 'registered') {
-      return registeredEvents.includes(event.id);
-    }
-    return true; // Tous les événements
-  });
-
   return (
     <div style={{ backgroundColor: '#1CABE2', minHeight: '100vh' }}> {/* Fond principal */}
-      <Box sx={{ width: '100%' }}> {/* Conteneur parent pour permettre la largeur complète */}
+      <Box sx={{  }}> {/* Conteneur parent pour permettre la largeur complète */}
         {/* Utilisation du composant HeaderSection */}
         <HeaderSection onAddEvent={handleOpen} onSendMail={handleSendMail} />
 
-        {/* Afficher le composant EventFilterSelect uniquement s'il y a des événements */}
-        {events.length > 0 && (
-          <EventFilterSelect filter={filter} setFilter={handleFilterChange} />
-        )}
-
-        {/* Liste des événements filtrés */}
-        {filteredEvents.map((event) => (
+        {/* Liste des événements */}
+        {events.map((event) => (
           <Card key={event.id} sx={{ mb: 2, p: 2, display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
             <CardContent>
               <Typography variant="subtitle2" color="textSecondary">

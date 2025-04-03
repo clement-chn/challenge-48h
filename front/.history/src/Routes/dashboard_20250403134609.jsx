@@ -1,44 +1,47 @@
 import React, { useState } from 'react';
-import { Box, Card, CardContent, IconButton, Typography, Button } from '@mui/material';
+import { Button, Typography, Box, Card, CardContent, IconButton } from '@mui/material';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
-import ModalCreeEvent from '../Components/ModalCreeEvent';
-import HeaderSection from '../Components/HeaderSection'; // Import du nouveau composant
-import EventFilterSelect from '../Components/EventFilterSelect'; // Import du nouveau composant
+import ModalCreeEvent from '../Components/ModalCreeEvent'; // Import du composant modal
 
 const AdminDashboard = () => {
   const [open, setOpen] = useState(false);
-  const [events, setEvents] = useState([]);
+  const [events, setEvents] = useState([]); // Liste des événements
   const [eventData, setEventData] = useState({
     title: '',
     date: '',
     description: '',
   });
-  const [registeredEvents, setRegisteredEvents] = useState([]);
-  const [filter, setFilter] = useState('all'); // État pour le filtre
-  const [isFilterApplied, setIsFilterApplied] = useState(false); // État pour savoir si un filtre est appliqué
 
+  // Gestion des inscriptions
+  const [registeredEvents, setRegisteredEvents] = useState([]); // Stocke les IDs des événements auxquels l'admin s'est inscrit
+
+  // Ouvrir et fermer la modal
   const handleOpen = () => setOpen(true);
   const handleClose = () => {
     setOpen(false);
-    setEventData({ title: '', date: '', description: '' });
+    setEventData({ title: '', date: '', description: '' }); // Réinitialiser le formulaire
   };
 
+  // Gérer les changements dans le formulaire
   const handleChange = (e) => {
     setEventData({ ...eventData, [e.target.name]: e.target.value });
   };
 
+  // Ajouter un nouvel événement
   const handleSubmit = (e) => {
     e.preventDefault();
-    setEvents([...events, { ...eventData, id: Date.now() }]);
+    setEvents([...events, { ...eventData, id: Date.now() }]); // Ajoute l'événement avec un ID unique
     handleClose();
   };
 
+  // Supprimer un événement
   const handleDelete = (id) => {
     setEvents(events.filter(event => event.id !== id));
-    setRegisteredEvents(registeredEvents.filter(eventId => eventId !== id));
+    setRegisteredEvents(registeredEvents.filter(eventId => eventId !== id)); // Retirer l'inscription si l'événement est supprimé
   };
 
+  // Inscription / Désinscription d'un admin
   const handleRegister = (id) => {
     if (registeredEvents.includes(id)) {
       setRegisteredEvents(registeredEvents.filter(eventId => eventId !== id));
@@ -47,43 +50,29 @@ const AdminDashboard = () => {
     }
   };
 
-  const handleSendMail = () => {
-    alert('Mail envoyé !');
-  };
-
-  const handleFilterChange = (selectedFilter) => {
-    setFilter(selectedFilter);
-    setIsFilterApplied(true); // Activer le filtre après la sélection
-  };
-
-  // Filtrer les événements en fonction du filtre sélectionné
-  const filteredEvents = events.filter((event) => {
-    if (!isFilterApplied) {
-      return true; // Affiche tous les événements si aucun filtre n'est appliqué
-    }
-    if (filter === 'closest') {
-      // Trier par date la plus proche
-      return true; // Ajoutez une logique pour trier par date
-    }
-    if (filter === 'registered') {
-      return registeredEvents.includes(event.id);
-    }
-    return true; // Tous les événements
-  });
-
   return (
     <div style={{ backgroundColor: '#1CABE2', minHeight: '100vh' }}> {/* Fond principal */}
-      <Box sx={{ width: '100%' }}> {/* Conteneur parent pour permettre la largeur complète */}
-        {/* Utilisation du composant HeaderSection */}
-        <HeaderSection onAddEvent={handleOpen} onSendMail={handleSendMail} />
+      <Box sx={{ p: 3, backgroundColor: '#ffffff', borderRadius: 2, maxWidth: '90%', margin: 'auto', mt: 5, boxShadow: 3 }}> {/* Deuxième fond */}
+        {/* Bouton Ajouter un événement */}
+        <Box sx={{ position: 'absolute', top: 18, right: 16, borderRadius: 1, p: 1 }}>
+          <Button variant="contained" color="success" onClick={handleOpen}>
+            Ajouter un événement
+          </Button>
+        </Box>
 
-        {/* Afficher le composant EventFilterSelect uniquement s'il y a des événements */}
-        {events.length > 0 && (
-          <EventFilterSelect filter={filter} setFilter={handleFilterChange} />
-        )}
+        {/* Bouton Envoyer un mail */}
+        <Box sx={{ position: 'absolute', top: 18, right: 250, borderRadius: 1, p: 1 }}>
+          <Button variant="contained" color="primary" onClick={() => alert('Mail envoyé !')}>
+            Envoyer un mail
+          </Button>
+        </Box>
 
-        {/* Liste des événements filtrés */}
-        {filteredEvents.map((event) => (
+        <Typography variant="h4" color="primary" sx={{ mb: 3, textAlign: 'center' }}>
+          Dashboard Administrateur
+        </Typography>
+
+        {/* Liste des événements */}
+        {events.map((event) => (
           <Card key={event.id} sx={{ mb: 2, p: 2, display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
             <CardContent>
               <Typography variant="subtitle2" color="textSecondary">
@@ -94,6 +83,7 @@ const AdminDashboard = () => {
                 {event.description}
               </Typography>
             </CardContent>
+            {/* Boutons Modifier, Supprimer, et Inscription */}
             <Box>
               <IconButton color="primary">
                 <EditIcon />

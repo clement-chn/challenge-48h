@@ -8,7 +8,8 @@ function App() {
   return (
     <>  
       <Router>
-        <div style={{ minHeight: '100vh' }}> {/* Suppression de backgroundColor */}
+       
+        <div className="min-h-screen bg-blue text-gray-900">
           <Routes>
             <Route path="/" element={<Connexion />} />
             <Route path="/dashboard" element={<Dashboard />} />

@@ -8,10 +8,12 @@ function App() {
   return (
     <>  
       <Router>
-        <div style={{ minHeight: '100vh' }}> {/* Suppression de backgroundColor */}
+        <div className="min-h-screen text-gray-900" style={{ backgroundColor: '#1CABE2' }}>
+         
           <Routes>
             <Route path="/" element={<Connexion />} />
             <Route path="/dashboard" element={<Dashboard />} />
+            <Route path="/inscription" element={<Inscription />} />
             <Route path="*" element={<Navigate to="/" />} />
           </Routes>
         </div>

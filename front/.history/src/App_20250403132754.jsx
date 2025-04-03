@@ -8,7 +8,8 @@ function App() {
   return (
     <>  
       <Router>
-        <div style={{ minHeight: '100vh' }}> {/* Suppression de backgroundColor */}
+        <ResponsiveAppBar /> {/* Ajout de la barre de navigation */}
+        <div className="min-h-screen bg-gray-50 text-gray-900">
           <Routes>
             <Route path="/" element={<Connexion />} />
             <Route path="/dashboard" element={<Dashboard />} />

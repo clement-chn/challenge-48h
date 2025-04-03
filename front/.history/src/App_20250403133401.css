@@ -1,9 +1,3 @@
-body {
-  background-color: #1CABE2; /* Changement de fond */
-  margin: 0;
-  font-family: Arial, sans-serif;
-}
-
 #root {
   max-width: 1280px;
   margin: 0 auto;
@@ -44,5 +38,5 @@ body {
 }
 
 .read-the-docs {
-  color: #888;
+  color: blue;
 }
