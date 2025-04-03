@@ -5,26 +5,37 @@ const HeaderSection = ({ onAddEvent, onSendMail }) => {
   return (
     <Box
       sx={{
-        backgroundColor: '#ffffff', // Fond blanc
+        backgroundColor: '#ffffff',
         borderRadius: 2,
-        width: '100%', // Prendre toute la largeur
+        width: '100%',
         display: 'flex',
+        flexDirection: { xs: 'column', sm: 'row' }, // Colonne pour petits écrans
         justifyContent: 'space-between',
         alignItems: 'center',
         boxShadow: 3,
         mb: 3,
-        p: 3, // Ajout de padding pour un meilleur espacement
+        p: 3,
       }}
     >
-      <Typography variant="h4" color="primary">
+      <Typography
+        variant="h4"
+        color="primary"
+        sx={{ mb: { xs: 2, sm: 0 } }} // Ajoute un espacement pour les petits écrans
+      >
         Dashboard Administrateur
       </Typography>
-      <Box>
+      <Box
+        sx={{
+          display: 'flex',
+          flexDirection: { xs: 'column', sm: 'row' }, // Colonne pour petits écrans
+          gap: 1, // Espacement entre les boutons
+        }}
+      >
         <Button
           variant="contained"
           color="success"
           onClick={onAddEvent}
-          sx={{ mr: 2 }}
+          sx={{ width: { xs: '100%', sm: 'auto' } }} // Bouton pleine largeur pour petits écrans
         >
           Ajouter un événement
         </Button>
@@ -32,6 +43,7 @@ const HeaderSection = ({ onAddEvent, onSendMail }) => {
           variant="contained"
           color="primary"
           onClick={onSendMail}
+          sx={{ width: { xs: '100%', sm: 'auto' } }} // Bouton pleine largeur pour petits écrans
         >
           Envoyer un mail
         </Button>

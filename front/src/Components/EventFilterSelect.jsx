@@ -7,7 +7,7 @@ const EventFilterSelect = ({ filter, setFilter }) => {
   };
 
   return (
-    <Box sx={{ mb: 3, width: '100%' }}>
+    <Box sx={{ mb: 3, width: '100%', backgroundColor: 'white' }}>
       <FormControl fullWidth>
         <InputLabel id="event-filter-label">Filtrer les événements</InputLabel>
         <Select
