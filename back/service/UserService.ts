@@ -10,7 +10,14 @@ export class UserService {
       const hashedPassword = await bcrypt.hash(user.password, 10);
 
       const { data, error } = await supabase.from('users').insert([
-        { name: user.name, surname: user.surname, email: user.email, phone: user.phone, password: hashedPassword, city: user.city },
+        {
+          name: user.name, 
+          surname: user.surname, 
+          password: hashedPassword,
+          email: user.email,
+          phone: user.phone,
+          city: user.city,
+        },
       ]);
 
       if (error) {

@@ -18,17 +18,40 @@ import IconButton from "@mui/material/IconButton";
 export default function Inscription() {
   const [showPassword, setShowPassword] = useState(false);
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
-    console.log({
-      lastName: data.get("lastName"),
-      firstName: data.get("firstName"),
-      city: data.get("city"),
-      phone: data.get("phone"),
-      email: data.get("email"),
+
+    const user = {
+      name: data.get("lastName"),
+      surname: data.get("firstName"),
       password: data.get("password"),
-    });
+      email: data.get("email"),
+      phone: data.get("phone"),
+      city: data.get("city")
+    };
+
+    try {
+      const response = await fetch('http://localhost:3000/api/users', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(user),
+      });
+
+      const result = await response.json();
+
+      if (!response.ok) {
+        throw new Error(result.error || "Erreur lors de l'inscription.");
+      }
+
+      alert("Inscription réussie !");
+      window.location.href = '/'; 
+    } catch (error) {
+      console.error("Erreur :", error.message);
+      alert(error.message);
+    }
   };
 
   return (

@@ -6,6 +6,8 @@ import { randomBytes } from 'crypto';
 export class UserController {
   static async createUser(req: Request, res: Response): Promise<void> {
     try {
+      console.log('Données reçues :', req.body); // Log des données reçues
+
       const user = req.body;
       const newUser = await UserService.createUser(user);
 
@@ -16,11 +18,8 @@ export class UserController {
 
       res.status(201).json(newUser);
     } catch (error) {
-      if (error instanceof Error) {
-        res.status(500).json({ error: error.message });
-      } else {
-        res.status(500).json({ error: 'Une erreur inconnue est survenue.' });
-      }
+      console.error('Erreur backend :', error); // Log des erreurs
+      res.status(500).json({ error: 'Erreur interne.' });
     }
   }
 
