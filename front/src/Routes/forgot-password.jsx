@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
 import CssBaseline from "@mui/material/CssBaseline";
@@ -6,24 +6,18 @@ import TextField from "@mui/material/TextField";
 import Link from "@mui/material/Link";
 import Grid from "@mui/material/Grid";
 import Box from "@mui/material/Box";
-import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
+import LockResetIcon from '@mui/icons-material/LockReset';
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 import InputAdornment from "@mui/material/InputAdornment";
 import EmailIcon from "@mui/icons-material/Email";
-import Visibility from "@mui/icons-material/Visibility";
-import VisibilityOff from "@mui/icons-material/VisibilityOff";
-import IconButton from "@mui/material/IconButton";
 
-export default function Connexion() {
-  const [showPassword, setShowPassword] = useState(false);
-
+export default function ForgotPassword() {
   const handleSubmit = (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
     console.log({
       email: data.get("email"),
-      password: data.get("password"),
     });
   };
 
@@ -46,12 +40,15 @@ export default function Connexion() {
         boxShadow: { xs: 0, sm: 3 }
       }}>
         <Avatar sx={{ m: 1, bgcolor: '#1CABE2' }}>
-          <LockOutlinedIcon />
+          <LockResetIcon />
         </Avatar>
         <Typography component="h1" variant="h5">
-          Connexion
+          Mot de passe oublié
         </Typography>
-        <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
+        <Typography variant="body2" sx={{ mt: 2, mb: 3, textAlign: 'center' }}>
+          Entrez votre adresse email pour recevoir un lien de réinitialisation
+        </Typography>
+        <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1, width: '100%' }}>
           <TextField
             margin="normal"
             required
@@ -74,37 +71,18 @@ export default function Connexion() {
               }
             }}
           />
-          <TextField
-            margin="normal"
-            required
+          <Button
+            type="submit"
             fullWidth
-            name="password"
-            label="Mot de passe"
-            type={showPassword ? "text" : "password"}
-            id="password"
-            autoComplete="current-password"
-            InputProps={{
-              endAdornment: (
-                <InputAdornment position="end">
-                  <IconButton onClick={() => setShowPassword(!showPassword)} edge="end">
-                    {showPassword ? <VisibilityOff /> : <Visibility />}
-                  </IconButton>
-                </InputAdornment>
-              ),
-            }}
-          />
-          <Button type="submit" fullWidth variant="contained" sx={{ mt: 3, mb: 2, backgroundColor: '#1CABE2' }}>
-            Se connecter
+            variant="contained"
+            sx={{ mt: 3, mb: 2, backgroundColor: '#1CABE2' }}
+          >
+            Envoyer le lien
           </Button>
-          <Grid container spacing={2} justifyContent="space-between">
+          <Grid container justifyContent="center">
             <Grid item>
-              <Link href="/forgot-password" variant="body2">
-                Mot de passe oublié ?
-              </Link>
-            </Grid>
-            <Grid item>
-              <Link href="/inscription" variant="body2">
-                S'inscrire
+              <Link href="/" variant="body2">
+                Retour à la connexion
               </Link>
             </Grid>
           </Grid>
